@@ -1,28 +1,137 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+    <div id="app">
+        <div class="login-widget">
+            <div class="login-widget-header">
+                <img v-bind:src="logo" />
+            </div>
+            <div class="login-widget-body">
+                <form>
+                    <h2 class="login-widget-content">Sign in to access {{ appName }}</h2>
+                    <div class="login-widget-content">{{ appDetail }}</div>
+                    <input class="login-widget-content" type="text" placeholder="Email or Username"/>
+                    <input class="login-widget-content" type="text" placeholder="Password"/>
+                    <input class="login-widget-content" type="submit" value="Sign in"/>
+                    <div class="login-widget-links login-widget-content">
+                        <a href="#">Need help signing in?</a>
+                        <a href="#">Create account</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
 export default {
-  name: 'app',
-  components: {
-    HelloWorld
-  }
+    name: "app",
+    data: () => ({
+        appName: 'Okta resources',
+        appDetail: 'Help Center, Learning Portal, Okta.com and much more!',
+        logo: 'https://login.okta.com/img/logo_okta.png'
+    })
 }
 </script>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style scoped>
+    #app {
+        position: absolute;
+        left: 0;
+        top: 0;
+        padding: 6.4rem 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgb(250, 250, 250);
+    }
+
+    .login-widget {
+        display: flex;
+        flex-direction: column;
+        background-color: white;
+        border-radius: 3px;
+        border: 1px solid rgb(221, 221, 221);
+        width: 400px;
+        height: 466px;
+        margin: 0 auto;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .login-widget-header {
+        display: flex;
+        flex-shrink: 1;
+        border-bottom: 1px solid rgb(221, 221, 221);
+        height: 90px;
+    }
+
+    .login-widget-header > img {
+        display: block; 
+        margin: auto;
+    }
+
+    .login-widget-body {
+        flex-grow: 1;
+        padding: 1.4rem 2.8rem;
+    }
+
+    .login-widget-body > form {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        text-align: center;
+    }
+
+    .login-widget-content {
+        flex-grow: 1;
+        font-size: 16px;
+    }
+
+    h2.login-widget-content {
+        margin: 0;
+        color: rgb(94, 94, 94);
+    }
+
+    div.login-widget-content {
+        color: rgb(119, 119, 119);
+    }
+
+    input.login-widget-content {
+        margin: 0.4rem 0;
+        border-radius: 3px;
+    }
+
+    input[type=text].login-widget-content {
+        padding: 0 0.8rem;
+        border: 1px solid rgb(140, 140, 140);
+        font-size: 13px;
+    }
+
+    input[type=text].login-widget-content::placeholder {
+        color: rgb(140, 140, 140);
+    }
+
+    input[type=submit].login-widget-content {
+        margin: 0.8rem 0;
+        cursor: pointer;
+        color: white;
+        background-image: linear-gradient(rgb(0, 125, 193), rgb(0, 115, 178));
+        border: 1px solid rgb(0, 69, 106);
+        padding: 0.4rem 0;
+        font-size: 14px;
+    }
+
+    input[type=submit].login-widget-content:hover {
+        background-image: linear-gradient(rgb(0, 135, 208), rgb(0, 125, 193));
+    }
+
+    .login-widget-links {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 0.8rem;
+    }
+
+    .login-widget-links > a {
+        margin: auto 0;
+        cursor: pointer;
+        text-decoration: none;
+        color: rgb(0, 125, 193)
+    }
 </style>
