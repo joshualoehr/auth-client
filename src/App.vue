@@ -1,45 +1,72 @@
 <template>
     <div id="app" :class="$mq">
-        <div class="login-widget" :class="$mq">
+        <div :style="{ 'max-height': showMore ? '516px' : '466px' }" class="login-widget" :class="$mq">
             <div class="login-widget-header">
-                <img v-bind:src="logo" height="70px"/>
+                <img :src="logo" height="70px"/>
             </div>
             <div class="login-widget-body" :class="$mq">
-                <form>
-                    <div class="login-widget-form-content">
-                        <h2 class="login-widget-content">Sign in to access {{ appName }}</h2>
-                        <div class="login-widget-content">{{ appDetail }}</div>
-                        <div class="login-widget-content login-widget-errors-container" v-if="error">
-                            <div class="login-widget-error">
-                                <div style="display: flex; width: 40px; height: 40px; border-right: 1px solid rgb(221, 221, 221)">
-                                    <img style="display: block; margin: auto;" src="/alert.svg" height="25px"/>
-                                </div>
-                                <span style="padding-left: 0.8rem;">{{ error }}</span>
-                            </div>
-                        </div>
-                        <input class="login-widget-content" type="text" placeholder="Email or Username"/>
-                        <input class="login-widget-content error" type="text" placeholder="Password"/>
-                        <input class="login-widget-content" type="submit" value="Sign in"/>
-                        <div class="login-widget-links login-widget-content">
-                            <a href="#">Need help signing in?</a>
-                            <a href="#">Create account</a>
-                        </div>
-                    </div>
-                </form>
+                <div class="login-widget-content-container">
+                    <h2 class="login-widget-content">Sign in to access {{ appName }}</h2>
+                    <div class="login-widget-content">{{ appDetail }}</div>
+                    <Error v-if="errorMsg" :error="errorMsg" />
+                    <Login v-if="activeView === 'login'"
+                        :errors="errors"
+                        @username-changed="errors.username = false; inputs.username = $event"
+                        @password-changed="errors.password = false; inputs.password = $event"
+                        @login-attempt="login()"
+                    />
+                    <Links 
+                        :showMore="showMore"
+                        @toggle-show-more="toggleShowMore()"/>
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import Error from './components/error';
+import Links from './components/links';
+import Login from './components/login';
+
 export default {
     name: "app",
+    components: { Error, Links, Login },
     data: () => ({
         appName: 'Test App',
         appDetail: 'Enter your AuthJL credentials to continue.',
         logo: '/logo-full.png',
-        // error: null
-        error: 'Sign in failed!'
+        activeView: 'login',
+        errorMsg: null,
+        errors: {
+            username: false,
+            password: false
+        },
+        inputs: {
+            username: '',
+            password: ''
+        },
+        showMore: false,
+        toggleShowMore: function() {
+            this.showMore = !this.showMore;
+        },
+        login: function() {
+            const { username, password } = this.inputs;
+
+            if (!username) {
+                this.errors.username = true;
+            }
+            if (!password) {
+                this.errors.password = true;
+            }
+            if (!username || !password) {
+                this.errorMsg = 'Missing one or more required fields.'
+                return;
+            }
+
+            this.errorMsg = null;
+            console.log(this.inputs.username, this.inputs.password);
+        }
     })
 }
 </script>
@@ -70,6 +97,8 @@ export default {
         border-radius: 3px;
         border: 1px solid rgb(221, 221, 221);
         font-family: Arial, Helvetica, sans-serif;
+        overflow: hidden;
+        transition: max-height 0.3s;
     }
     
     .login-widget.mobile {
@@ -78,7 +107,6 @@ export default {
     }
 
     .login-widget.desktop {
-        height: 466px;
         margin: 0 auto;
     }
 
@@ -95,22 +123,17 @@ export default {
     }
 
     .login-widget-body {
-        padding: 1.4rem 2.8rem;
-        flex-grow: 1;
-    }
-
-    .login-widget-body > form {
         display: flex;
         flex-direction: column;
-        height: 100%;
         text-align: center;
+        padding: 1.4rem 2.8rem;
     }
 
-    .login-widget-form-content {
+    .login-widget-content-container {
         display: flex;
         margin: auto;
         max-width: 466px;
-        min-height: 310px;
+        min-height: 300px;
         flex-direction: column;
         text-align: center;
     }
@@ -128,77 +151,5 @@ export default {
 
     div.login-widget-content {
         color: rgb(119, 119, 119);
-    }
-
-    .login-widget-errors-container {
-        display: flex;
-        flex-direction: column;
-        text-align: left;
-        margin-bottom: 0.8rem;
-    }
-
-    .login-widget-error {
-        display: flex;
-        font-size: 13px;
-        margin-bottom: 0.4rem;
-        border: 1px solid rgb(221, 221, 221);
-        border-radius: 3px;
-        height: 40px;
-        line-height: 40px;
-    }
-
-    input.login-widget-content {
-        margin: 0.4rem 0;
-        border-radius: 3px;
-    }
-
-    input[type=text].login-widget-content {
-        padding: 0 0.8rem;
-        border: 1px solid rgb(140, 140, 140);
-        font-size: 13px;
-        color: rgb(100, 100, 100);
-    }
-
-    input[type=text].login-widget-content::placeholder {
-        color: rgb(140, 140, 140);
-    }
-
-    input[type=text].login-widget-content:hover {
-        border: 1px solid rgb(100, 100, 100);
-    }
-
-    input[type=submit].login-widget-content {
-        margin: 0.8rem 0;
-        cursor: pointer;
-        color: white;
-        background-image: linear-gradient(rgb(0, 134, 194), rgb(0, 118, 171));
-        border: 1px solid rgb(0, 69, 106);
-        padding: 0.4rem 0;
-        font-size: 14px;
-    }
-
-    input[type=submit].login-widget-content:hover {
-        background-image: linear-gradient(rgb(0, 154, 222), rgb(0, 134, 194));
-    }
-
-    input.login-widget-content.error {
-        border: 1px solid rgb(227,72,67) !important;
-    }
-
-    .login-widget-links {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 0.8rem;
-    }
-
-    .login-widget-links > a {
-        margin: auto 0;
-        cursor: pointer;
-        text-decoration: none;
-        color: rgb(0, 125, 193)
-    }
-
-    .login-widget-links > a:hover {
-        color: rgb(0, 150, 231);
     }
 </style>
