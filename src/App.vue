@@ -1,19 +1,21 @@
 <template>
-    <div id="app">
-        <div class="login-widget">
+    <div id="app" :class="$mq">
+        <div class="login-widget" :class="$mq">
             <div class="login-widget-header">
                 <img v-bind:src="logo" height="70px"/>
             </div>
-            <div class="login-widget-body">
+            <div class="login-widget-body" :class="$mq">
                 <form>
-                    <h2 class="login-widget-content">Sign in to access {{ appName }}</h2>
-                    <div class="login-widget-content">{{ appDetail }}</div>
-                    <input class="login-widget-content" type="text" placeholder="Email or Username"/>
-                    <input class="login-widget-content" type="text" placeholder="Password"/>
-                    <input class="login-widget-content" type="submit" value="Sign in"/>
-                    <div class="login-widget-links login-widget-content">
-                        <a href="#">Need help signing in?</a>
-                        <a href="#">Create account</a>
+                    <div class="login-widget-form-content">
+                        <h2 class="login-widget-content">Sign in to access {{ appName }}</h2>
+                        <div class="login-widget-content">{{ appDetail }}</div>
+                        <input class="login-widget-content" type="text" placeholder="Email or Username"/>
+                        <input class="login-widget-content" type="text" placeholder="Password"/>
+                        <input class="login-widget-content" type="submit" value="Sign in"/>
+                        <div class="login-widget-links login-widget-content">
+                            <a href="#">Need help signing in?</a>
+                            <a href="#">Create account</a>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -26,7 +28,7 @@ export default {
     name: "app",
     data: () => ({
         appName: 'Test App',
-        appDetail: 'Enter you AuthJL credentials to continue.',
+        appDetail: 'Enter your AuthJL credentials to continue.',
         logo: '/logo-full.png'
     })
 }
@@ -34,13 +36,21 @@ export default {
 
 <style scoped>
     #app {
+        display: flex;
         position: absolute;
         left: 0;
         top: 0;
-        padding: 6.4rem 0;
         width: 100vw;
         height: 100vh;
         background-color: rgb(250, 250, 250);
+    }
+
+    #app.mobile {
+        padding: 0;
+    }
+
+    #app.desktop {
+        padding: 6.4rem 0;
     }
 
     .login-widget {
@@ -49,10 +59,17 @@ export default {
         background-color: white;
         border-radius: 3px;
         border: 1px solid rgb(221, 221, 221);
-        width: 400px;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+    
+    .login-widget.mobile {
+        width: 100%;
+        margin: auto;
+    }
+
+    .login-widget.desktop {
         height: 466px;
         margin: 0 auto;
-        font-family: Arial, Helvetica, sans-serif;
     }
 
     .login-widget-header {
@@ -68,8 +85,8 @@ export default {
     }
 
     .login-widget-body {
-        flex-grow: 1;
         padding: 1.4rem 2.8rem;
+        flex-grow: 1;
     }
 
     .login-widget-body > form {
@@ -79,7 +96,17 @@ export default {
         text-align: center;
     }
 
+    .login-widget-form-content {
+        display: flex;
+        margin: auto;
+        max-width: 466px;
+        min-height: 310px;
+        flex-direction: column;
+        text-align: center;
+    }
+
     .login-widget-content {
+        max-height: 40px;
         flex-grow: 1;
         font-size: 16px;
     }
