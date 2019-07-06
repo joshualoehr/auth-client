@@ -2,7 +2,7 @@
     <div id="app">
         <div class="login-widget">
             <div class="login-widget-header">
-                <img v-bind:src="logo" />
+                <img v-bind:src="logo" height="70px"/>
             </div>
             <div class="login-widget-body">
                 <form>
@@ -25,9 +25,9 @@
 export default {
     name: "app",
     data: () => ({
-        appName: 'Okta resources',
-        appDetail: 'Help Center, Learning Portal, Okta.com and much more!',
-        logo: 'https://login.okta.com/img/logo_okta.png'
+        appName: 'Test App',
+        appDetail: 'Enter you AuthJL credentials to continue.',
+        logo: '/logo-full.png'
     })
 }
 </script>
@@ -112,14 +112,14 @@ export default {
         margin: 0.8rem 0;
         cursor: pointer;
         color: white;
-        background-image: linear-gradient(rgb(0, 125, 193), rgb(0, 115, 178));
+        background-image: linear-gradient(rgb(0, 134, 194), rgb(0, 118, 171));
         border: 1px solid rgb(0, 69, 106);
         padding: 0.4rem 0;
         font-size: 14px;
     }
 
     input[type=submit].login-widget-content:hover {
-        background-image: linear-gradient(rgb(0, 135, 208), rgb(0, 125, 193));
+        background-image: linear-gradient(rgb(0, 154, 222), rgb(0, 134, 194));
     }
 
     .login-widget-links {
@@ -133,5 +133,9 @@ export default {
         cursor: pointer;
         text-decoration: none;
         color: rgb(0, 125, 193)
+    }
+
+    .login-widget-links > a:hover {
+        color: rgb(0, 150, 231);
     }
 </style>
