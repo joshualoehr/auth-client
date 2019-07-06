@@ -9,8 +9,16 @@
                     <div class="login-widget-form-content">
                         <h2 class="login-widget-content">Sign in to access {{ appName }}</h2>
                         <div class="login-widget-content">{{ appDetail }}</div>
+                        <div class="login-widget-content login-widget-errors-container" v-if="error">
+                            <div class="login-widget-error">
+                                <div style="display: flex; width: 40px; height: 40px; border-right: 1px solid rgb(221, 221, 221)">
+                                    <img style="display: block; margin: auto;" src="/alert.svg" height="25px"/>
+                                </div>
+                                <span style="padding-left: 0.8rem;">{{ error }}</span>
+                            </div>
+                        </div>
                         <input class="login-widget-content" type="text" placeholder="Email or Username"/>
-                        <input class="login-widget-content" type="text" placeholder="Password"/>
+                        <input class="login-widget-content error" type="text" placeholder="Password"/>
                         <input class="login-widget-content" type="submit" value="Sign in"/>
                         <div class="login-widget-links login-widget-content">
                             <a href="#">Need help signing in?</a>
@@ -29,7 +37,9 @@ export default {
     data: () => ({
         appName: 'Test App',
         appDetail: 'Enter your AuthJL credentials to continue.',
-        logo: '/logo-full.png'
+        logo: '/logo-full.png',
+        // error: null
+        error: 'Sign in failed!'
     })
 }
 </script>
@@ -120,6 +130,23 @@ export default {
         color: rgb(119, 119, 119);
     }
 
+    .login-widget-errors-container {
+        display: flex;
+        flex-direction: column;
+        text-align: left;
+        margin-bottom: 0.8rem;
+    }
+
+    .login-widget-error {
+        display: flex;
+        font-size: 13px;
+        margin-bottom: 0.4rem;
+        border: 1px solid rgb(221, 221, 221);
+        border-radius: 3px;
+        height: 40px;
+        line-height: 40px;
+    }
+
     input.login-widget-content {
         margin: 0.4rem 0;
         border-radius: 3px;
@@ -129,10 +156,15 @@ export default {
         padding: 0 0.8rem;
         border: 1px solid rgb(140, 140, 140);
         font-size: 13px;
+        color: rgb(100, 100, 100);
     }
 
     input[type=text].login-widget-content::placeholder {
         color: rgb(140, 140, 140);
+    }
+
+    input[type=text].login-widget-content:hover {
+        border: 1px solid rgb(100, 100, 100);
     }
 
     input[type=submit].login-widget-content {
@@ -147,6 +179,10 @@ export default {
 
     input[type=submit].login-widget-content:hover {
         background-image: linear-gradient(rgb(0, 154, 222), rgb(0, 134, 194));
+    }
+
+    input.login-widget-content.error {
+        border: 1px solid rgb(227,72,67) !important;
     }
 
     .login-widget-links {
