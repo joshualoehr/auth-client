@@ -26,7 +26,7 @@
 
 <style>
     .login-widget-content {
-        max-height: 40px;
+        height: 40px;
         flex-grow: 1;
         font-size: 16px;
     }

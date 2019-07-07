@@ -8,16 +8,9 @@
                 <div class="login-widget-content-container">
                     <h2 class="login-widget-content">Sign in to access {{ appName }}</h2>
                     <div class="login-widget-content">{{ appDetail }}</div>
-                    <Error v-if="errorMsg" :error="errorMsg" />
-                    <Login v-if="activeView === 'login'"
-                        :errors="errors"
-                        @username-changed="errors.username = false; inputs.username = $event"
-                        @password-changed="errors.password = false; inputs.password = $event"
-                        @login-attempt="login()"
-                    />
-                    <Links 
-                        :showMore="showMore"
-                        @toggle-show-more="toggleShowMore()"/>
+                    <Error v-if="error" :error="error" />
+                    <Login v-if="activeView === 'login'" @error="error = $event"/>
+                    <Links :showMore="showMore" @toggle-show-more="toggleShowMore()"/>
                 </div>
             </div>
         </div>
@@ -37,35 +30,10 @@ export default {
         appDetail: 'Enter your AuthJL credentials to continue.',
         logo: '/logo-full.png',
         activeView: 'login',
-        errorMsg: null,
-        errors: {
-            username: false,
-            password: false
-        },
-        inputs: {
-            username: '',
-            password: ''
-        },
+        error: null,
         showMore: false,
         toggleShowMore: function() {
             this.showMore = !this.showMore;
-        },
-        login: function() {
-            const { username, password } = this.inputs;
-
-            if (!username) {
-                this.errors.username = true;
-            }
-            if (!password) {
-                this.errors.password = true;
-            }
-            if (!username || !password) {
-                this.errorMsg = 'Missing one or more required fields.'
-                return;
-            }
-
-            this.errorMsg = null;
-            console.log(this.inputs.username, this.inputs.password);
         }
     })
 }
@@ -140,16 +108,17 @@ export default {
 
     .login-widget-content {
         max-height: 40px;
-        flex-grow: 1;
         font-size: 16px;
     }
 
     h2.login-widget-content {
+        height: 40px;
         margin: 0;
         color: rgb(94, 94, 94);
     }
 
     div.login-widget-content {
+        height: 40px;
         color: rgb(119, 119, 119);
     }
 </style>
