@@ -10,7 +10,12 @@
                     <div class="login-widget-content">{{ appDetail }}</div>
                     <Error v-if="error" :error="error" />
                     <Login v-if="activeView === 'login'" @error="error = $event"/>
-                    <Links :showMore="showMore" @toggle-show-more="toggleShowMore()"/>
+                    <CreateAccount v-if="activeView === 'accountCreate'" @error="error = $event"/>
+                    <Links 
+                        :showMore="showMore" 
+                        @toggle-show-more="toggleShowMore()"
+                        @account-create="activeView = 'accountCreate'"
+                    />
                 </div>
             </div>
         </div>
@@ -21,10 +26,11 @@
 import Error from './components/error';
 import Links from './components/links';
 import Login from './components/login';
+import CreateAccount from './components/CreateAccount';
 
 export default {
     name: "app",
-    components: { Error, Links, Login },
+    components: { Error, Links, Login, CreateAccount },
     data: () => ({
         appName: 'Test App',
         appDetail: 'Enter your AuthJL credentials to continue.',

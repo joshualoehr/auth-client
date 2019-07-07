@@ -2,7 +2,7 @@
     <div class="login-widget-content">
         <div class="login-widget-links">
             <a @click="$emit('toggle-show-more')">Need help signing in?</a>
-            <a href="#">Create account</a>
+            <a @click="$emit('account-create')">Create account</a>
         </div>
         <!-- <div class="login-widget-links-more" :style="{ display: showMore ? 'flex' : 'none' }"> -->
         <div class="login-widget-links-more" :style="{ 'max-height': showMore ? '60px' : 0 }">

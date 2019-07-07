@@ -1,6 +1,5 @@
-
 <template>
-    <div id="login-widget-login-container">
+    <div id="login-widget-account-create-container">
         <TextInput v-for="({ key, placeholder, value, touched, error }) in fields" :key="key"
             :password="key === 'password'"
             :placeholder="placeholder"
@@ -9,9 +8,9 @@
             :touched="touched"
             @touched="updateField(key, 'touched', true)"
             :error="error"
-            @enter="login"
+            @enter="createAccount"
         />
-        <button class="login-widget-content" @click="login">Sign in</button>
+        <button class="login-widget-content" @click="createAccount">Create account</button>
     </div>
 </template>
 
@@ -19,18 +18,33 @@
     import TextInput from './TextInput';
 
     export default {
-        name: 'login',
+        name: 'CreateAccount',
         components: { TextInput },
         data: () => ({
             fields: [
                 {
                     key: 'username',
-                    placeholder: 'Email or Username',
+                    placeholder: 'Username',
+                    ...TextInput.defaultModel()
+                },
+                {
+                    key: 'email',
+                    placeholder: 'Email',
                     ...TextInput.defaultModel()
                 },
                 {
                     key: 'password',
                     placeholder: 'Password',
+                    ...TextInput.defaultModel()
+                },
+                {
+                    key: 'firstName',
+                    placeholder: 'First Name',
+                    ...TextInput.defaultModel()
+                },
+                {
+                    key: 'lastName',
+                    placeholder: 'Last Name',
                     ...TextInput.defaultModel()
                 }
             ]
@@ -42,35 +56,15 @@
             updateField: function(key, attr, value) {
                 this.fields.find(field => field.key === key)[attr] = value;
             },
-            login: function() {
-                const username = this.getField('username').value;
-                const password = this.getField('password').value;
+            createAccount: function() {
 
-                this.updateField('username', 'touched', true);
-                this.updateField('password', 'touched', true);
-
-                if (!username) {
-                    this.updateField('username', 'error', true);
-                }
-                
-                if (!password) {
-                    this.updateField('password', 'error', true);
-                }
-
-                if (!username || !password) {
-                    this.$emit('error', 'Missing one or more required fields.');
-                    return;
-                } else {
-                    this.$emit('error', null);
-                    console.log('Attempt login:', username, password);
-                }
             }
         }
     }
 </script>
 
 <style scoped>
-    #login-widget-login-container {
+    #login-widget-account-create-container {
         flex-grow: 3;
         display: flex;
         flex-direction: column;

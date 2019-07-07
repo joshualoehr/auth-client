@@ -27,7 +27,12 @@
             danger: function() {
                 return this.touched && this.error;
             }
-        }
+        },
+        defaultModel: () => ({
+            value: '',
+            touched: false,
+            error: false
+        })
     }
 </script>
 
