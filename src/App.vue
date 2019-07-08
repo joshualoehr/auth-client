@@ -49,20 +49,13 @@ export default {
 
 <style scoped>
     #app {
+        display: flex;
         position: absolute;
         left: 0;
         top: 0;
         width: 100vw;
         height: 100vh;
         background-color: rgb(250, 250, 250);
-    }
-
-    #app.mobile {
-        padding: 0;
-    }
-
-    #app.desktop {
-        padding: 6.4rem 0;
     }
 
     .login-widget {
@@ -72,16 +65,19 @@ export default {
         border-radius: 3px;
         border: 1px solid rgb(221, 221, 221);
         font-family: Arial, Helvetica, sans-serif;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: auto;
     }
     
     .login-widget.mobile {
+        margin-top: auto;
         width: 100%;
-        margin: auto;
     }
 
     .login-widget.desktop {
+        margin-top: 20vh;
         width: 400px;
-        margin: 0 auto;
     }
 
     .login-widget-header {
