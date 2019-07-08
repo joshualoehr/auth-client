@@ -38,7 +38,7 @@
 
 <style scoped>
     .login-widget-content {
-        flex-grow: 1;
+        height: 40px;
         margin: 0.4rem 0;
         border-radius: 3px;
         padding: 0 0.8rem;

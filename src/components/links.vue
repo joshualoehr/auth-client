@@ -1,13 +1,13 @@
 <template>
-    <div class="login-widget-content">
+    <div id="login-widget-links-container">
         <div class="login-widget-links">
-            <a @click="$emit('toggle-show-more')">Need help signing in?</a>
-            <a @click="$emit('account-create')">Create account</a>
+            <a class="login-widget-link" @click="showMore = !showMore">Need help signing in?</a>
+            <a class="login-widget-link" @click="$emit('account-create')">Create account</a>
         </div>
         <!-- <div class="login-widget-links-more" :style="{ display: showMore ? 'flex' : 'none' }"> -->
-        <div class="login-widget-links-more" :style="{ 'max-height': showMore ? '60px' : 0 }">
-            <a href="#">Recover password</a>
-            <a href="#">Unlock account</a>
+        <div class="login-widget-links-more" :style="{ 'max-height': showMore ? '80px' : 0 }">
+            <a class="login-widget-link">Recover password</a>
+            <a class="login-widget-link">Unlock account</a>
         </div>
     </div>
 </template>
@@ -15,18 +15,14 @@
 <script>
     export default {
         name: "links",
-        props: {
-            showMore: {
-                type: Boolean,
-                default: () => false
-            }
-        }
+        data: () => ({
+            showMore: false
+        })
     };
 </script>
 
-<style>
-    .login-widget-content {
-        height: 40px;
+<style scoped>
+    #login-widget-links-container {
         flex-grow: 1;
         font-size: 16px;
     }
@@ -37,14 +33,14 @@
         margin-top: 0.8rem;
     }
 
-    a {
+    a.login-widget-link {
         margin: auto 0;
         cursor: pointer;
         text-decoration: none;
         color: rgb(0, 125, 193)
     }
 
-    a:hover {
+    a.login-widget-link:hover {
         color: rgb(0, 150, 231);
     }
 
@@ -54,11 +50,11 @@
         text-align: left;
         overflow: hidden;
         margin-top: 0.8rem;
+        transition: max-height 0.15s linear;
     }
 
-    .login-widget-links-more > a {
+    .login-widget-links-more > a.login-widget-link {
         width: 50%;
         margin-top: 0.8rem;
-        transition: max-height 1.0s;
     }
 </style>

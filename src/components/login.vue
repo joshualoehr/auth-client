@@ -77,7 +77,8 @@
     }
 
     button.login-widget-content {
-        flex-grow: 1;
+        height: 40px;
+        border-radius: 3px;
         margin: 0.8rem 0;
         cursor: pointer;
         color: white;

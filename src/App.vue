@@ -1,6 +1,6 @@
 <template>
     <div id="app" :class="$mq">
-        <div :style="{ 'max-height': showMore ? '516px' : '466px' }" class="login-widget" :class="$mq">
+        <div class="login-widget" :class="$mq">
             <div class="login-widget-header">
                 <img :src="logo" height="70px"/>
             </div>
@@ -12,8 +12,6 @@
                     <Login v-if="activeView === 'login'" @error="error = $event"/>
                     <CreateAccount v-if="activeView === 'accountCreate'" @error="error = $event"/>
                     <Links 
-                        :showMore="showMore" 
-                        @toggle-show-more="toggleShowMore()"
                         @account-create="activeView = 'accountCreate'"
                     />
                 </div>
@@ -37,17 +35,12 @@ export default {
         logo: '/logo-full.png',
         activeView: 'login',
         error: null,
-        showMore: false,
-        toggleShowMore: function() {
-            this.showMore = !this.showMore;
-        }
     })
 }
 </script>
 
 <style scoped>
     #app {
-        display: flex;
         position: absolute;
         left: 0;
         top: 0;
@@ -71,8 +64,6 @@ export default {
         border-radius: 3px;
         border: 1px solid rgb(221, 221, 221);
         font-family: Arial, Helvetica, sans-serif;
-        overflow: hidden;
-        transition: max-height 0.3s;
     }
     
     .login-widget.mobile {
@@ -81,6 +72,7 @@ export default {
     }
 
     .login-widget.desktop {
+        width: 400px;
         margin: 0 auto;
     }
 
@@ -107,24 +99,22 @@ export default {
         display: flex;
         margin: auto;
         max-width: 466px;
-        min-height: 300px;
         flex-direction: column;
         text-align: center;
+        overflow: hidden;
     }
 
     .login-widget-content {
-        max-height: 40px;
+        height: 40px;
         font-size: 16px;
     }
 
     h2.login-widget-content {
-        height: 40px;
         margin: 0;
         color: rgb(94, 94, 94);
     }
 
     div.login-widget-content {
-        height: 40px;
         color: rgb(119, 119, 119);
     }
 </style>
