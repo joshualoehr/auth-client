@@ -24,12 +24,13 @@ import Links from './components/links';
 import Login from './components/login';
 import CreateAccount from './components/CreateAccount';
 
+const pageData = JSON.parse(document.getElementById('pageData').innerHTML);
+
 export default {
     name: "app",
     components: { Error, Links, Login, CreateAccount },
     data: () => ({
-        appName: 'Test App',
-        appDetail: 'Enter your AuthJL credentials to continue.',
+        ...pageData,
         logo: '/logo-full.png',
         activeView: 'login',
         error: null,
