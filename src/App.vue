@@ -6,12 +6,13 @@
             </div>
             <div class="login-widget-body" :class="$mq">
                 <div class="login-widget-content-container">
-                    <h2 class="login-widget-content">Sign in to access {{ appName }}</h2>
-                    <div class="login-widget-content">{{ appDetail }}</div>
+                    <h2 class="login-widget-content">{{ headerText }}</h2>
+                    <div v-if="activeView !== 'consent'" class="login-widget-content">{{ activeView === 'consent' ? consentDetail : appDetail }}</div>
                     <Error v-if="error" :error="error" />
                     <Login v-if="activeView === 'login'" @error="error = $event"/>
                     <CreateAccount v-if="activeView === 'createAccount'" @error="error = $event"/>
-                    <Links :activeView="activeView" @show="activeView = $event"/>
+                    <Consent v-if="activeView === 'consent'" :appName="appName" :claims="requestedClaims" @show="activeView = $event"/>
+                    <Links v-if="activeView !== 'consent'" :activeView="activeView" @show="activeView = $event"/>
                 </div>
             </div>
         </div>
@@ -23,18 +24,26 @@ import Error from './components/error';
 import Links from './components/links';
 import Login from './components/login';
 import CreateAccount from './components/CreateAccount';
+import Consent from './components/Consent';
 
 const pageData = JSON.parse(document.getElementById('pageData').innerHTML);
 
 export default {
     name: "app",
-    components: { Error, Links, Login, CreateAccount },
+    components: { Error, Links, Login, CreateAccount, Consent },
     data: () => ({
         ...pageData,
         logo: '/logo-full.png',
-        activeView: 'login',
+        activeView: 'consent',
         error: null,
-    })
+    }),
+    computed: {
+        headerText: function() {
+            return this.activeView === 'consent'
+                ? `${this.appName} will have access to:`
+                : `Sign in to access ${this.appName}`
+        }
+    }
 }
 </script>
 
