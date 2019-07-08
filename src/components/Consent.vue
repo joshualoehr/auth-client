@@ -5,7 +5,7 @@
                 {{ claimText }}
             </li>
         </ul>
-        <div class="login-widget-allow-text">Allow {{ appName }} to do this?</div>
+        <div class="login-widget-allow-text">Allow {{ client_name }} to do this?</div>
         <button @click="sendConsent">Allow</button>
         <a @click="$emit('show', 'login')">Cancel</a>
     </div>
@@ -15,7 +15,9 @@
     export default {
         name: 'Consent',
         props: {
-            appName: String,
+            client_id: String,
+            client_name: String,
+            username: String,
             claims: Array
         },
         data: () => ({
@@ -32,7 +34,16 @@
         },
         methods: {
             sendConsent: function() {
-                console.log('Send consent');
+                const { username, client_id } = this;
+                fetch('/consent', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, client_id })
+                })
+                .then(({ id_token }) => {
+                    this.$emit('consentGranted', id_token);
+                })
+                .catch(console.error);
             }
         }
     }

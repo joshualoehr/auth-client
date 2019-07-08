@@ -21,6 +21,9 @@
     export default {
         name: 'login',
         components: { TextInput },
+        props: {
+            client_id: String
+        },
         data: () => ({
             fields: [
                 {
@@ -36,6 +39,9 @@
             ]
         }),
         methods: {
+            getField: function(key) {
+                return this.fields.find(field => field.key === key);
+            },
             updateField: function(key, attr, value) {
                 this.fields.find(field => field.key === key)[attr] = value;
             },
@@ -51,7 +57,21 @@
                     this.$emit('error', 'Missing one or more required fields.');
                 } else {
                     this.$emit('error', null);
-                    console.log('Attempt login:', this.fields.map(field => field.value));
+
+                    const username = this.getField('username').value;
+                    const password = this.getField('password').value;
+                    const client_id = this.client_id;
+
+                    fetch('/login', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ username, password, client_id })
+                    })
+                    .then(res => res.json())
+                    .then(({ consent: consentGranted, id_token }) => {
+                        this.$emit('authenticated', { username, consentGranted, id_token });
+                    })
+                    .catch(console.error);
                 }
             }
         }

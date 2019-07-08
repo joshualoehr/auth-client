@@ -7,11 +7,18 @@
             <div class="login-widget-body" :class="$mq">
                 <div class="login-widget-content-container">
                     <h2 class="login-widget-content">{{ headerText }}</h2>
-                    <div v-if="activeView !== 'consent'" class="login-widget-content">{{ activeView === 'consent' ? consentDetail : appDetail }}</div>
+                    <div v-if="subheaderText" class="login-widget-content">{{ subheaderText }}</div>
                     <Error v-if="error" :error="error" />
-                    <Login v-if="activeView === 'login'" @error="error = $event"/>
+                    <Login v-if="activeView === 'login'" :client_id="client_id" @authenticated="handleAuthenticationSuccess" @error="error = $event"/>
                     <CreateAccount v-if="activeView === 'createAccount'" @error="error = $event"/>
-                    <Consent v-if="activeView === 'consent'" :appName="appName" :claims="requestedClaims" @show="activeView = $event"/>
+                    <Consent v-if="activeView === 'consent'" 
+                        :client_id="client_id" 
+                        :client_name="client_name" 
+                        :claims="requestedClaims" 
+                        :username="authenticatedUsername" 
+                        @show="activeView = $event"
+                        @consentGranted="redirect"
+                    />
                     <Links v-if="activeView !== 'consent'" :activeView="activeView" @show="activeView = $event"/>
                 </div>
             </div>
@@ -27,21 +34,44 @@ import CreateAccount from './components/CreateAccount';
 import Consent from './components/Consent';
 
 const pageData = JSON.parse(document.getElementById('pageData').innerHTML);
+const { client_id, redirect_uri, client_name, client_detail, consent_detail, logo, view } = pageData;
 
 export default {
     name: "app",
     components: { Error, Links, Login, CreateAccount, Consent },
     data: () => ({
-        ...pageData,
-        logo: '/logo-full.png',
-        activeView: 'login',
+        client_id,
+        redirect_uri,
+        client_name,
+        client_detail,
+        consent_detail,
+        logo: logo || '/logo-full.png',
+        activeView: view || 'login',
         error: null,
+        authenticatedUsername: null,
+        requestedClaims: ['username', 'email', 'name']
     }),
     computed: {
         headerText: function() {
             return this.activeView === 'consent'
-                ? `${this.appName} will have access to:`
-                : `Sign in to access ${this.appName}`
+                ? `${this.client_name} will have access to:`
+                : `Sign in to access ${this.client_name}`
+        },
+        subheaderText: function() {
+            return this.activeView === 'consent' ? this.consent_detail : this.client_detail;
+        }
+    },
+    methods: {
+        handleAuthenticationSuccess: function({ username, consentGranted, id_token }) {
+            this.authenticatedUsername = username;
+            if (!consentGranted) {
+                this.activeView = 'consent';
+            } else {
+                this.redirect(id_token);
+            }
+        },
+        redirect: function(id_token) {
+            window.history.pushState(this.redirect_uri);
         }
     }
 }
