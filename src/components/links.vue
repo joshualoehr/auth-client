@@ -1,13 +1,19 @@
 <template>
     <div id="login-widget-links-container">
-        <div class="login-widget-links">
-            <a class="login-widget-link" @click="showMore = !showMore">Need help signing in?</a>
-            <a class="login-widget-link" @click="$emit('account-create')">Create account</a>
+        <div v-if="activeView === 'login'">
+            <div class="login-widget-links" style="justify-content: space-between;">
+                <a class="login-widget-link" @click="showMore = !showMore">Need help signing in?</a>
+                <a class="login-widget-link" @click="showMore = false; $emit('show', 'createAccount')">Create account</a>
+            </div>
+            <div class="login-widget-links-more" :style="{ 'max-height': showMore ? '80px' : 0 }">
+                <a class="login-widget-link">Recover password</a>
+                <a class="login-widget-link">Unlock account</a>
+            </div>
         </div>
-        <!-- <div class="login-widget-links-more" :style="{ display: showMore ? 'flex' : 'none' }"> -->
-        <div class="login-widget-links-more" :style="{ 'max-height': showMore ? '80px' : 0 }">
-            <a class="login-widget-link">Recover password</a>
-            <a class="login-widget-link">Unlock account</a>
+        <div v-if="activeView === 'createAccount'">
+            <div class="login-widget-links" style="justify-content: center;">
+                <a class="login-widget-link" @click="$emit('show', 'login')">Back to sign in</a>
+            </div>
         </div>
     </div>
 </template>
@@ -15,6 +21,9 @@
 <script>
     export default {
         name: "links",
+        props: {
+            activeView: String
+        },
         data: () => ({
             showMore: false
         })
@@ -29,7 +38,7 @@
 
     .login-widget-links {
         display: flex;
-        justify-content: space-between;
+        /* justify-content: space-between; */
         margin-top: 0.8rem;
     }
 

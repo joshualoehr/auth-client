@@ -10,10 +10,8 @@
                     <div class="login-widget-content">{{ appDetail }}</div>
                     <Error v-if="error" :error="error" />
                     <Login v-if="activeView === 'login'" @error="error = $event"/>
-                    <CreateAccount v-if="activeView === 'accountCreate'" @error="error = $event"/>
-                    <Links 
-                        @account-create="activeView = 'accountCreate'"
-                    />
+                    <CreateAccount v-if="activeView === 'createAccount'" @error="error = $event"/>
+                    <Links :activeView="activeView" @show="activeView = $event"/>
                 </div>
             </div>
         </div>

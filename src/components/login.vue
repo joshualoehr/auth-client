@@ -36,30 +36,19 @@
             ]
         }),
         methods: {
-            getField: function(key) {
-                return this.fields.find(field => field.key === key);
-            },
             updateField: function(key, attr, value) {
                 this.fields.find(field => field.key === key)[attr] = value;
             },
             login: function() {
-                const username = this.getField('username').value;
-                const password = this.getField('password').value;
+                this.fields.forEach(field => {
+                    this.updateField(field.key, 'touched', true);
+                    if (!field.value) {
+                        this.updateField(field.key, 'error', true);
+                    }
+                });
 
-                this.updateField('username', 'touched', true);
-                this.updateField('password', 'touched', true);
-
-                if (!username) {
-                    this.updateField('username', 'error', true);
-                }
-                
-                if (!password) {
-                    this.updateField('password', 'error', true);
-                }
-
-                if (!username || !password) {
+                if (this.fields.some(field => !field.value)) {
                     this.$emit('error', 'Missing one or more required fields.');
-                    return;
                 } else {
                     this.$emit('error', null);
                     console.log('Attempt login:', username, password);

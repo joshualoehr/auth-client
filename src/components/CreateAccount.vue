@@ -50,14 +50,23 @@
             ]
         }),
         methods: {
-            getField: function(key) {
-                return this.fields.find(field => field.key === key);
-            },
             updateField: function(key, attr, value) {
                 this.fields.find(field => field.key === key)[attr] = value;
             },
             createAccount: function() {
+                this.fields.forEach(field => {
+                    this.updateField(field.key, 'touched', true);
+                    if (!field.value) {
+                        this.updateField(field.key, 'error', true);
+                    }
+                });
 
+                if (this.fields.some(field => !field.value)) {
+                    this.$emit('error', 'Missing one or more required fields.');
+                } else {
+                    this.$emit('error', null);
+                    console.log('Attempt create account', this.fields.map(field => field.value));
+                }
             }
         }
     }
@@ -72,6 +81,8 @@
 
     button.login-widget-content {
         flex-grow: 1;
+        border-radius: 3px;
+        height: 40px;
         margin: 0.8rem 0;
         cursor: pointer;
         color: white;
