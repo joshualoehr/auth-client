@@ -51,7 +51,7 @@
                     this.$emit('error', 'Missing one or more required fields.');
                 } else {
                     this.$emit('error', null);
-                    console.log('Attempt login:', username, password);
+                    console.log('Attempt login:', this.fields.map(field => field.value));
                 }
             }
         }

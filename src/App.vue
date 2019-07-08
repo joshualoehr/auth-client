@@ -34,7 +34,7 @@ export default {
     data: () => ({
         ...pageData,
         logo: '/logo-full.png',
-        activeView: 'consent',
+        activeView: 'login',
         error: null,
     }),
     computed: {
